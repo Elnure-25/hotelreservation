@@ -1,4 +1,4 @@
 package com.example.hotelreservation.service.impl;
 
-public class RoomServiceImpl {
+public interface RoomServiceImpl {
 }
