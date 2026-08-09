@@ -1,20 +1,17 @@
 package com.example.hotelreservation.mapper;
 
 import com.example.hotelreservation.dto.request.RoomRequest;
-
+import com.example.hotelreservation.dto.response.RoomResponse;
 import com.example.hotelreservation.entity.Room;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-public class RoomMapper {
+@Mapper(componentModel = "spring")
+public interface RoomMapper {
 
-    public Room toEntity(RoomRequest request) {
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "available", constant = "true")
+    Room toEntity(RoomRequest request);
 
-        Room room = new Room();
-
-        room.setRoomNumber(request.getRoomNumber());
-        room.setType(request.getType());
-        room.setPricePerNight(request.getPricePerNight());
-        room.setAvailable(true);
-
-        return room;
-    }
+    RoomResponse toResponse(Room room);
 }

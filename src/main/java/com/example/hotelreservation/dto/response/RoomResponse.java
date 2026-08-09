@@ -16,4 +16,5 @@ public class RoomResponse {
     double pricePerNight;
     boolean isAvailable;
 
+
 }
