@@ -3,6 +3,8 @@ package com.example.hotelreservation.service.impl;
 import com.example.hotelreservation.dto.request.BookingRequest;
 import com.example.hotelreservation.dto.response.BookingResponse;
 import com.example.hotelreservation.entity.Booking;
+import com.example.hotelreservation.exception.BookingNotFoundException;
+import com.example.hotelreservation.exception.RoomNotFoundException;
 import com.example.hotelreservation.mapper.BookingMapper;
 import com.example.hotelreservation.repository.BookingRepository;
 import com.example.hotelreservation.repository.RoomRepository;
@@ -23,21 +25,29 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public BookingResponse createBooking(BookingRequest request) {
+
         Booking booking = bookingMapper.toEntity(request);
+
         var room = roomRepository.findById(request.getRoomId())
-                .orElseThrow();
+                .orElseThrow(() -> new RoomNotFoundException("Room not found"));
+
         long nights = ChronoUnit.DAYS.between(
                 request.getCheckIn(),
                 request.getCheckOut()
         );
+
         double totalPrice = nights * room.getPricePerNight();
+
         booking.setTotalPrice(totalPrice);
+
         Booking savedBooking = bookingRepository.save(booking);
+
         return bookingMapper.toResponse(savedBooking);
     }
 
     @Override
     public List<BookingResponse> getBookingsByRoom(Long roomId) {
+
         return bookingRepository.findByRoomId(roomId)
                 .stream()
                 .map(bookingMapper::toResponse)
@@ -46,6 +56,10 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public void deleteBooking(Long id) {
+
+        bookingRepository.findById(id)
+                .orElseThrow(() -> new BookingNotFoundException("Booking not found"));
+
         bookingRepository.deleteById(id);
     }
 }
