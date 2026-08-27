@@ -3,11 +3,10 @@ package com.example.hotelreservation;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@com.example.hotelreservation.SpringBootTest
+@SpringBootTest
 class HotelreservationApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
-
+    @Test
+    void contextLoads() {
+    }
 }
